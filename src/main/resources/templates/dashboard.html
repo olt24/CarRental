@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+<h1>Welcome, <span th:text="${#authentication.name}">User</span></h1>
+<p>Your bookings:</p>
+<ul>
+    <li th:each="b : ${bookings}" th:text="${b.car.model} + ' from ' + ${b.startDate} + ' to ' + ${b.endDate}"></li>
+</ul>
+<p><a th:href="@{/logout}">Log out</a></p>
+</body>
+</html>

@@ -1,8 +1,9 @@
 package com.carrental.repo;
 
 import com.carrental.entity.User;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    User findByEmail(String email);
+public interface UserRepository extends JpaRepository<User,Long> {
+  Optional<User> findByEmail(String email);
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pending Licenses</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+<h1>Approve Driver’s Licenses</h1>
+<table>
+    <thead>
+    <tr>
+        <th>User</th>
+        <th>File</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="dl : ${list}">
+        <td th:text="${dl.user.name} + ' (' + dl.user.email + ')'"></td>
+        <td><a th:href="@{/uploads/{fn}(fn=${dl.filePath})}" th:text="${dl.filePath}"></a></td>
+        <td th:text="${dl.status}"></td>
+        <td>
+            <form th:action="@{/templates/admin/licenses/{id}/approve(id=${dl.id})}" method="post">
+                <button type="submit">Approve</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
