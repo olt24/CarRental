@@ -22,7 +22,7 @@
         <td><a th:href="@{/uploads/{fn}(fn=${dl.filePath})}" th:text="${dl.filePath}"></a></td>
         <td th:text="${dl.status}"></td>
         <td>
-            <form th:action="@{/templates/admin/licenses/{id}/approve(id=${dl.id})}" method="post">
+            <form th:action="@{/admin/licenses/{id}/approve(id=${dl.id})}" method="post">
                 <button type="submit">Approve</button>
             </form>
         </td>

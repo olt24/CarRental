@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>CarRental Home</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+
+<!-- Insert the shared header -->
+<div th:replace="fragments/header :: siteHeader"></div>
+
+<!-- Hero section -->
+<section class="hero">
+    <h1>Welcome to CarRental</h1>
+    <p>Your next ride is just a few clicks away.</p>
+    <div sec:authorize="isAnonymous()">
+        <a th:href="@{/register}"><button>Get Started</button></a>
+        <a th:href="@{/browse}"><button>Browse Cars</button></a>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <a th:href="@{/dashboard}"><button>Your Dashboard</button></a>
+    </div>
+</section>
+
+<!-- Features section -->
+<section class="features">
+    <div class="feature-card">
+        <h3>Quick Booking</h3>
+        <p>Pick your dates, choose a car, done.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Flexible Payments</h3>
+        <p>Pay now or at pickup—your choice.</p>
+    </div>
+    <div class="feature-card">
+        <h3>24/7 Support</h3>
+        <p>We’re here whenever you need us.</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2025 CarRental. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

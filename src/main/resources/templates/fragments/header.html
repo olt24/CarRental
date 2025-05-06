@@ -1,0 +1,32 @@
+<!-- src/main/resources/templates/fragments/header.html -->
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<body>
+<header th:fragment="siteHeader">
+    <nav>
+        <a th:href="@{/}">Home</a>
+
+        <!-- logged-in users see their name, dashboard & logout -->
+        <span sec:authorize="isAuthenticated()">
+          | Welcome, <b sec:authentication="name">User</b>
+          <a th:href="@{/dashboard}">Dashboard</a>
+          <a th:href="@{/logout}">Log out</a>
+
+            <!-- admin only -->
+          <span sec:authorize="hasRole('ADMIN')">
+            | <a th:href="@{/admin/licenses}">Admin Panel</a>
+          </span>
+        </span>
+
+        <!-- guests see login/register -->
+        <span sec:authorize="isAnonymous()">
+          | <a th:href="@{/login}">Log in</a>
+          <a th:href="@{/register}">Register</a>
+        </span>
+    </nav>
+</header>
+<hr/>
+</body>
+</html>
