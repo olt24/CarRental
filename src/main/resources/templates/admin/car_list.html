@@ -1,0 +1,17 @@
+<div th:replace="fragments/header :: siteHeader"></div>
+<h2>All Cars</h2>
+<a href="/admin/cars/add">+ Add New Car</a>
+<table>
+    <tr>
+        <th>Brand</th><th>Model</th><th>Price</th><th>Actions</th>
+    </tr>
+    <tr th:each="car : ${cars}">
+        <td th:text="${car.brand}"></td>
+        <td th:text="${car.model}"></td>
+        <td th:text="${car.pricePerDay}"></td>
+        <td>
+            <a th:href="@{'/admin/cars/edit/' + ${car.id}}">Edit</a>
+            <a th:href="@{'/admin/cars/delete/' + ${car.id}}">Delete</a>
+        </td>
+    </tr>
+</table>

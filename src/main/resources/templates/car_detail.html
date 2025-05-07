@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title th:text="${car.brand + ' ' + car.model}"></title>
+  <link rel="stylesheet" th:href="@{/css/main.css}" />
+  <link rel="stylesheet"
+        th:href="@{'https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css'}"/>
+</head>
+<body>
+<div th:replace="fragments/header :: siteHeader"></div>
+
+<div class="container mt-4">
+  <h2 th:text="${car.brand + ' ' + car.model}"></h2>
+
+  <!-- Alerts -->
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+  <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+  <!-- Carousel (unchanged) -->
+  <div id="carCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div th:each="img, stat : ${car.imagePaths}"
+           th:classappend="${stat.index == 0} ? ' active' : ''"
+           class="carousel-item">
+        <img th:src="@{${img}}"
+             th:alt="${car.brand + ' ' + car.model}"
+             class="d-block w-100 rounded"/>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+  <!-- Specs -->
+  <ul class="list-group mb-4">
+    <li class="list-group-item"><strong>Year:</strong> <span th:text="${car.year}"></span></li>
+    <li class="list-group-item"><strong>Seats:</strong> <span th:text="${car.seats}"></span></li>
+    <li class="list-group-item"><strong>Price/day:</strong> $<span th:text="${car.pricePerDay}"></span></li>
+  </ul>
+
+  <!-- Booking form -->
+  <form th:action="@{'/cars/' + ${car.id} + '/book'}" method="post" class="row g-3">
+    <div class="col-md-4">
+      <label class="form-label">Start</label>
+      <input id="startDate" name="startDate" readonly class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">End</label>
+      <input id="endDate" name="endDate" readonly class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Payment Method</label>
+      <select name="paymentMethod" class="form-select" required>
+        <option th:value="${T(com.carrental.entity.Payment.PaymentMethod).ONLINE}">Online</option>
+        <option th:value="${T(com.carrental.entity.Payment.PaymentMethod).CASH}">Cash on Pickup</option>
+      </select>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-success w-100">Book &amp; Pay</button>
+    </div>
+  </form>
+</div>
+
+
+<script th:src="@{'https://code.jquery.com/jquery-3.6.0.min.js'}"></script>
+<script th:src="@{'https://code.jquery.com/ui/1.13.2/jquery-ui.min.js'}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var bookedRanges = /*[[${bookedRanges}]]*/ [];
+
+  function isAvailable(date) {
+    var y = date.getFullYear(),
+            m = ('0'+(date.getMonth()+1)).slice(-2),
+            d = ('0'+date.getDate()).slice(-2),
+            s = y+'-'+m+'-'+d;
+    for (var r of bookedRanges) {
+      if (s >= r.start && s <= r.end) return [false,'','Booked'];
+    }
+    return [true,'',''];
+  }
+
+  $(function(){
+    $("#startDate, #endDate").datepicker({
+      dateFormat: 'yy-mm-dd',
+      beforeShowDay: isAvailable,
+      minDate: 0
+    });
+  });
+  /*]]>*/
+</script>
+</body>
+</html>

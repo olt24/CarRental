@@ -1,16 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <meta charset="UTF-8"/>
+    <title>Your Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 <body>
-<h1>Welcome, <span th:text="${#authentication.name}">User</span></h1>
-<p>Your bookings:</p>
-<ul>
-    <li th:each="b : ${bookings}" th:text="${b.car.model} + ' from ' + ${b.startDate} + ' to ' + ${b.endDate}"></li>
-</ul>
-<p><a th:href="@{/logout}">Log out</a></p>
+<div th:replace="fragments/header :: siteHeader"></div>
+
+<div class="container mt-4">
+    <h2>Your Bookings</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Car</th><th>From</th><th>To</th>
+            <th>Days</th><th>Amount</th><th>Method</th><th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="b : ${bookings}">
+            <td>
+                <a th:href="@{'/cars/' + ${b.car.id}}"
+                   th:text="${b.car.brand + ' ' + b.car.model}"></a>
+            </td>
+            <td th:text="${b.startDate}"></td>
+            <td th:text="${b.endDate}"></td>
+            <td th:text="
+    ${T(java.time.temporal.ChronoUnit).DAYS.between(
+        b.startDate,
+        b.endDate
+    )}
+">0</td>
+
+            <td th:text="${b.payment.amount}"></td>
+            <td th:text="${b.payment.method}"></td>
+            <td th:text="${b.payment.status}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(bookings)}">
+            <td colspan="7">You have no bookings yet.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>

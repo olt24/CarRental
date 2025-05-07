@@ -1,0 +1,85 @@
+
+<form th:action="@{${car.id == null} ? '/admin/cars/add' : '/admin/cars/edit/' + ${car.id}}"
+      method="post"
+      enctype="multipart/form-data"
+      th:object="${car}">
+
+  <div>
+    <label for="brand">Brand</label>
+    <input th:field="*{brand}"
+           id="brand"
+           type="text"
+           placeholder="Brand"
+           required />
+  </div>
+
+  <div>
+    <label for="model">Model</label>
+    <input th:field="*{model}"
+           id="model"
+           type="text"
+           placeholder="Model"
+           required />
+  </div>
+
+  <div>
+    <label for="year">Year</label>
+    <input th:field="*{year}"
+           id="year"
+           type="number"
+           placeholder="Year"
+           th:value="${car.id != null ? car.year : ''}"
+           onfocus="this.placeholder=''"
+           onblur="if(this.value=='') this.placeholder='Year';"
+           required />
+  </div>
+
+  <div>
+    <label for="pricePerDay">Price per Day</label>
+    <input th:field="*{pricePerDay}"
+           id="pricePerDay"
+           type="number"
+           placeholder="Price/Day"
+           th:value="${car.id != null ? car.pricePerDay : ''}"
+           onfocus="this.placeholder=''"
+           onblur="if(this.value=='') this.placeholder='Price/Day';"
+           required />
+  </div>
+
+  <div>
+    <label for="fuelType">Fuel Type</label>
+    <input th:field="*{fuelType}"
+           id="fuelType"
+           type="text"
+           placeholder="Fuel Type" />
+  </div>
+
+  <div>
+    <label for="seats">Nr of Seats</label>
+    <input th:field="*{seats}"
+           id="seats"
+           type="number"
+           placeholder="Nr of seats"
+           th:value="${car.id != null ? car.seats : ''}"
+           onfocus="this.placeholder=''"
+           onblur="if(this.value=='') this.placeholder='Nr of seats';" />
+  </div>
+
+  <div>
+    <label for="transmission">Transmission</label>
+    <input th:field="*{transmission}"
+           id="transmission"
+           type="text"
+           placeholder="Transmission" />
+  </div>
+
+  <div>
+    <label for="images">Upload Images</label>
+    <input id="images"
+           type="file"
+           name="images"
+           multiple />
+  </div>
+
+  <button type="submit">Save</button>
+</form>

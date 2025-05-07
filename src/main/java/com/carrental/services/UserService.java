@@ -23,7 +23,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepo;
     private final DriverLicenseRepository dlRepo;
     private final PasswordEncoder passwordEncoder;
-    private final Path uploadDir = Paths.get("uploads/licenses");
+    private final Path uploadDir = Paths.get("src/main/resources/static/uploads/licenses/");
 
     public UserService(UserRepository userRepo,
                        DriverLicenseRepository dlRepo,

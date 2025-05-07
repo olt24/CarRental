@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<!-- Insert the shared header -->
+<!-- Shared header -->
 <div th:replace="fragments/header :: siteHeader"></div>
 
 <!-- Hero section -->
@@ -17,10 +17,29 @@
     <p>Your next ride is just a few clicks away.</p>
     <div sec:authorize="isAnonymous()">
         <a th:href="@{/register}"><button>Get Started</button></a>
-        <a th:href="@{/browse}"><button>Browse Cars</button></a>
+        <a th:href="@{/cars}"><button>Browse Cars</button></a>
     </div>
     <div sec:authorize="isAuthenticated()">
         <a th:href="@{/dashboard}"><button>Your Dashboard</button></a>
+    </div>
+</section>
+
+<!-- Featured Cars section -->
+<section class="featured-cars container">
+    <h2>Featured Cars</h2>
+    <div class="row">
+        <div class="col-md-4 car-card" th:each="car : ${cars}">
+            <a th:href="@{'/cars/' + ${car.id}}">
+                <img th:src= " @{${car.imagePaths[0]}}"
+                     alt="Car image"
+                     class="img-fluid rounded" />
+                <h4 th:text="${car.brand + ' ' + car.model}"></h4>
+                <p th:text="'$' + ${car.pricePerDay} + '/day'"></p>
+            </a>
+        </div>
+        <div th:if="${#lists.isEmpty(cars)}" class="col-12">
+            <p>No cars available at the moment.</p>
+        </div>
     </div>
 </section>
 
