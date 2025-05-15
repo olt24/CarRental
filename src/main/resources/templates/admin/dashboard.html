@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: siteHeader"></div>
+<h1>Admin Dashboard</h1>
+
+<nav>
+    <a th:href="@{/admin/dashboard}">Dashboard</a> |
+    <a th:href="@{/admin/licenses}">Licenses</a> |
+    <a th:href="@{/admin/cars}">Cars</a>
+</nav>
+
+<!-- Cars Section (unchanged) -->
+<section id="cars">
+    <!-- … -->
+</section>
+
+<!-- Bookings -->
+<section id="bookings">
+    <h2>Bookings</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th><th>User</th><th>Car</th>
+            <th>From</th><th>To</th><th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="b : ${bookings}">
+            <td th:text="${b.id}">1</td>
+            <td th:text="${b.user.name}">John Doe</td>
+            <td th:text="${b.car.brand + ' ' + b.car.model}">Toyota Yaris</td>
+            <!-- Use #temporals.format instead of #dates.format -->
+            <td th:text="${b.startDate != null ? #temporals.format(b.startDate, 'yyyy-MM-dd') : 'N/A'}">
+                2025-05-01
+            </td>
+            <td th:text="${b.endDate   != null ? #temporals.format(b.endDate,   'yyyy-MM-dd') : 'N/A'}">
+                2025-05-05
+            </td>
+            <td th:text="${b.status}">PENDING</td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(bookings)}">
+            <td colspan="6">No bookings found.</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section id="licenses">
+    <h2>Pending Driver’s Licenses</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Preview</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="dl : ${pendingLicenses}">
+            <!-- user info -->
+            <td th:text="${dl.user.name} + ' (' + dl.user.email + ')'"></td>
+
+            <!-- inline thumbnail -->
+            <td>
+                <img th:src="@{|/uploads/licenses/${dl.filePath}|}"
+                     alt="License"
+                     style="max-width:120px; max-height:80px; object-fit:cover; border:1px solid #ccc;"/>
+            </td>
+
+            <!-- view & download -->
+            <td>
+                <!-- opens full-size in new tab -->
+                <a th:href="@{|/uploads/licenses/${dl.filePath}|}"
+                   target="_blank"
+                   class="btn">View</a>
+
+                <!-- forces download, uses URL’s filename by default -->
+                <a th:href="@{|/uploads/licenses/${dl.filePath}|}"
+                   download
+                   class="btn">Download</a>
+
+                <!-- approve license -->
+                <form th:action="@{/admin/licenses/{id}/approve(id=${dl.id})}" method="post">
+                    <button type="submit">Approve</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(pendingLicenses)}">
+            <td colspan="3">No pending licenses.</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+
+</body>
+</html>

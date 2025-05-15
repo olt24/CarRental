@@ -3,59 +3,58 @@
       xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>CarRental Home</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
 </head>
 <body>
+<!-- Header -->
+<header th:replace="fragments/header :: siteHeader"></header>
 
-<!-- Shared header -->
-<div th:replace="fragments/header :: siteHeader"></div>
-
-<!-- Hero section -->
+<!-- Hero -->
 <section class="hero">
-    <h1>Welcome to CarRental</h1>
-    <p>Your next ride is just a few clicks away.</p>
-    <div sec:authorize="isAnonymous()">
-        <a th:href="@{/register}"><button>Get Started</button></a>
-        <a th:href="@{/cars}"><button>Browse Cars</button></a>
-    </div>
-    <div sec:authorize="isAuthenticated()">
-        <a th:href="@{/dashboard}"><button>Your Dashboard</button></a>
+    <div class="hero-content">
+        <h1>Find Your Perfect Ride</h1>
+        <p>Fast, flexible car rentals at the click of a button.</p>
+        <div class="hero-buttons">
+            <a th:if="${#authorization.expr('isAnonymous()')}" th:href="@{/register}" class="btn btn-primary">Get Started</a>
+            <a th:if="${#authorization.expr('isAnonymous()')}" th:href="@{/cars}" class="btn btn-secondary">Browse Cars</a>
+            <a th:if="${#authorization.expr('isAuthenticated()')}" th:href="@{/dashboard}" class="btn btn-primary">Your Dashboard</a>
+        </div>
     </div>
 </section>
 
-<!-- Featured Cars section -->
-<section class="featured-cars container">
+<!-- Featured Cars -->
+<section class="featured container">
     <h2>Featured Cars</h2>
-    <div class="row">
-        <div class="col-md-4 car-card" th:each="car : ${cars}">
+    <div class="cards">
+        <div class="card" th:each="car : ${cars}">
             <a th:href="@{'/cars/' + ${car.id}}">
-                <img th:src= " @{${car.imagePaths[0]}}"
-                     alt="Car image"
-                     class="img-fluid rounded" />
-                <h4 th:text="${car.brand + ' ' + car.model}"></h4>
-                <p th:text="'$' + ${car.pricePerDay} + '/day'"></p>
+                <img th:src="@{${car.imagePaths[1]}}" alt="Image of [[${car.brand}]] [[${car.model}]]">
+                <div class="card-body">
+                    <h3 th:text="${car.brand + ' ' + car.model}"></h3>
+                    <p th:text="'$' + ${car.pricePerDay} + '/day'"></p>
+                </div>
             </a>
         </div>
-        <div th:if="${#lists.isEmpty(cars)}" class="col-12">
-            <p>No cars available at the moment.</p>
-        </div>
+        <p th:if="${#lists.isEmpty(cars)}">No cars available at the moment.</p>
     </div>
 </section>
 
-<!-- Features section -->
+<!-- Key Features -->
 <section class="features">
-    <div class="feature-card">
+    <div class="feature">
         <h3>Quick Booking</h3>
-        <p>Pick your dates, choose a car, done.</p>
+        <p>Select dates, pick a car, and you’re set.</p>
     </div>
-    <div class="feature-card">
+    <div class="feature">
         <h3>Flexible Payments</h3>
-        <p>Pay now or at pickup—your choice.</p>
+        <p>Pay now or when you pick up—you decide.</p>
     </div>
-    <div class="feature-card">
+    <div class="feature">
         <h3>24/7 Support</h3>
-        <p>We’re here whenever you need us.</p>
+        <p>We’re always here to help you out.</p>
     </div>
 </section>
 
@@ -63,6 +62,5 @@
 <footer>
     <p>&copy; 2025 CarRental. All rights reserved.</p>
 </footer>
-
 </body>
 </html>

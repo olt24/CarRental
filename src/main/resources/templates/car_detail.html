@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8"/>
   <title th:text="${car.brand + ' ' + car.model}"></title>
-  <link rel="stylesheet" th:href="@{/css/main.css}" />
   <link rel="stylesheet"
         th:href="@{'https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css'}"/>
+  <link rel="stylesheet" th:href="@{/css/main.css}" />
+  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/car.css}" />
 </head>
 <body>
 <div th:replace="fragments/header :: siteHeader"></div>
@@ -17,30 +19,48 @@
   <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
   <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
-  <!-- Carousel (unchanged) -->
-  <div id="carCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div th:each="img, stat : ${car.imagePaths}"
-           th:classappend="${stat.index == 0} ? ' active' : ''"
-           class="carousel-item">
-        <img th:src="@{${img}}"
-             th:alt="${car.brand + ' ' + car.model}"
-             class="d-block w-100 rounded"/>
+  <!-- Product gallery (replaces Bootstrap carousel) -->
+  <div class="product-gallery mb-4">
+    <!-- Main image -->
+    <div class="main-image text-center">
+      <img
+              id="mainImage"
+              th:src="@{'/' + ${car.imagePaths[0]}}"
+              th:alt="${car.brand + ' ' + car.model}"
+              class="img-fluid rounded"
+              style="max-height:400px; object-fit:cover;"
+      />
+    </div>
+
+    <!-- Thumbnails -->
+    <div class="thumbnails d-flex justify-content-center mt-3">
+      <div th:each="img, stat : ${car.imagePaths}" class="thumb-wrapper mx-1">
+        <img
+                th:src="@{'/' + ${img}}"
+                th:alt="'Thumbnail ' + (${stat.index}+1)"
+                class="thumb img-thumbnail"
+                th:classappend="${stat.index == 0} ? ' active-thumb' : ''"
+                th:attr="data-full=@{'/' + ${img}}"
+                style="width:60px; height:60px; object-fit:cover; cursor:pointer;"
+        />
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
   </div>
 
-  <!-- Specs -->
-  <ul class="list-group mb-4">
-    <li class="list-group-item"><strong>Year:</strong> <span th:text="${car.year}"></span></li>
-    <li class="list-group-item"><strong>Seats:</strong> <span th:text="${car.seats}"></span></li>
-    <li class="list-group-item"><strong>Price/day:</strong> $<span th:text="${car.pricePerDay}"></span></li>
+  <!-- Specifications -->
+  <ul class="list-group list-group-flush mb-4">
+    <li class="list-group-item">
+      <strong>Year:</strong>
+      <span th:text="${car.year}">—</span>
+    </li>
+    <li class="list-group-item">
+      <strong>Seats:</strong>
+      <span th:text="${car.seats}">—</span>
+    </li>
+    <li class="list-group-item">
+      <strong>Price/day:</strong>
+      <span th:text="'$' + ${car.pricePerDay}">—</span>
+    </li>
   </ul>
 
   <!-- Booking form -->
@@ -89,6 +109,18 @@
       dateFormat: 'yy-mm-dd',
       beforeShowDay: isAvailable,
       minDate: 0
+    });
+  });
+  /*]]>*/
+</script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  document.querySelectorAll('.thumb').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var src = el.getAttribute('data-full');
+      document.getElementById('mainImage').setAttribute('src', src);
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active-thumb'));
+      el.classList.add('active-thumb');
     });
   });
   /*]]>*/

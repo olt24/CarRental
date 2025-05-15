@@ -1,0 +1,216 @@
+/* src/main/resources/static/css/dashboard.css */
+
+/* Container & Heading */
+.container h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Responsive table wrapper */
+.container {
+    overflow-x: auto;
+    padding-bottom: 2rem;
+}
+
+/* Table base */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    background: transparent;
+}
+
+/* Header styling */
+.table thead tr {
+    background-color: #f0f2f5;
+}
+.table thead th {
+    color: #555;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    border: none;
+}
+
+/* Body rows */
+.table tbody tr {
+    background-color: #fff;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: background 0.2s;
+}
+.table tbody tr:hover {
+    background-color: #fbfcfd;
+}
+
+/* Cells */
+.table td {
+    padding: 0.75rem 1rem;
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+    color: #444;
+}
+
+/* Link styling (car name) */
+.table td a {
+    color: #007bff;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.table td a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Status badges */
+.table td[th\:text="${b.payment.status}"] {
+/* if you bind status to a span, you can style badges here */
+}
+.table td:nth-child(7) {
+    /* Example: wrap status in a span.badge in your HTML, then style: */
+}
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: #6c757d;
+    border-radius: 0.25rem;
+}
+.badge.SUCCESS {
+    background-color: #28a745;
+}
+.badge.PENDING {
+    background-color: #ffc107;
+    color: #212529;
+}
+.badge.FAILED {
+    background-color: #dc3545;
+}
+
+/* Utility */
+.mb-4 { margin-bottom: 1.5rem; }
+.mt-4 { margin-top: 1.5rem; }
+
+/* Admin page heading */
+h1 {
+    font-size: 2.5rem;
+    margin: 1.5rem 0 1rem;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+}
+
+/* Admin nav */
+nav {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+nav a {
+    color: #007bff;
+    font-weight: 500;
+    margin: 0 0.75rem;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+nav a:hover,
+nav a.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Section headings */
+section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: #444;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.25rem;
+}
+
+/* Generic table styles (override defaults) */
+section table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    margin-bottom: 2rem;
+}
+section table thead tr {
+    background: #f0f2f5;
+}
+section table thead th {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: #555;
+    text-align: left;
+    border: none;
+}
+section table tbody tr {
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+section table td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    border: none;
+    color: #333;
+}
+
+/* Action buttons in licenses table */
+section#licenses .btn {
+    display: inline-block;
+    margin: 0 0.25rem 0.25rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: #fff;
+    background: #17a2b8;
+    border-radius: 0.25rem;
+    transition: background 0.2s;
+}
+section#licenses .btn:hover {
+    background: #138496;
+}
+
+/* Thumbnail preview styling */
+section#licenses img {
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Approve form button */
+section#licenses form button {
+    margin-top: 0.25rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.875rem;
+    color: #fff;
+    background: #28a745;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+section#licenses form button:hover {
+    background: #218838;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    nav a {
+        margin: 0 0.5rem;
+        padding: 0.4rem 0.8rem;
+    }
+    section#licenses td,
+    section#bookings td {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+    }
+}

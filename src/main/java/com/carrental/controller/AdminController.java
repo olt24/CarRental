@@ -1,6 +1,7 @@
 package com.carrental.controller;
 
 import com.carrental.entity.Car;
+import com.carrental.repo.BookingRepository;
 import com.carrental.repo.CarRepository;
 import com.carrental.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,19 @@ import java.util.UUID;
 public class AdminController {
     private final UserService userService;
     public AdminController(UserService userService) { this.userService = userService; }
+    @Autowired
+    private CarRepository carRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @GetMapping("/dashboard")
+    public String dashboard(Model model) {
+        model.addAttribute("cars",            carRepository.findAll());
+        model.addAttribute("bookings",        bookingRepository.findAll());
+        model.addAttribute("pendingLicenses", userService.pendingLicenses());
+        return "admin/dashboard";
+    }
 
     @GetMapping("/licenses")
     public String pending(Model m) {
@@ -32,11 +46,10 @@ public class AdminController {
     @PostMapping("/licenses/{id}/approve")
     public String approve(@PathVariable Long id) {
         userService.approveLicense(id);
-        return "redirect:/admin/licenses";
+        return "redirect:/admin/dashboard";
     }
 
-    @Autowired
-    private CarRepository carRepository;
+
 
     @GetMapping("/cars")
     public String listCars(Model model) {

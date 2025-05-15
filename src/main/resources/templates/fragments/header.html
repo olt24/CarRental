@@ -1,32 +1,47 @@
 <!-- src/main/resources/templates/fragments/header.html -->
 <!DOCTYPE html>
-<html
-        xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- add this line -->
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+</head>
 <body>
 <header th:fragment="siteHeader">
-    <nav>
-        <a th:href="@{/}">Home</a>
+    <nav class="site-nav container">
+        <!-- Logo / Brand -->
+        <a class="logo" th:href="@{/}">CarRental</a>
 
-        <!-- logged-in users see their name, dashboard & logout -->
-        <span sec:authorize="isAuthenticated()">
-          | Welcome, <b sec:authentication="name">User</b>
-          <a th:href="@{/dashboard}">Dashboard</a>
-          <a th:href="@{/logout}">Log out</a>
+        <!-- Left links -->
+        <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/cars}">Browse Cars</a>
+        </div>
 
-            <!-- admin only -->
-          <span sec:authorize="hasRole('ADMIN')">
-            | <a th:href="@{/admin/licenses}">Admin Panel</a>
-          </span>
-        </span>
+        <!-- Right links -->
+        <div class="nav-links">
+            <!-- Anonymous visitors -->
+            <span sec:authorize="isAnonymous()">
+        <a th:href="@{/login}">Log in</a>
+        <a th:href="@{/register}">Register</a>
+      </span>
 
-        <!-- guests see login/register -->
-        <span sec:authorize="isAnonymous()">
-          | <a th:href="@{/login}">Log in</a>
-          <a th:href="@{/register}">Register</a>
-        </span>
+            <!-- Authenticated users -->
+            <span sec:authorize="isAuthenticated()">
+        <a th:href="@{/dashboard}">My Dashboard</a>
+        <a th:href="@{/logout}">Log out</a>
+      </span>
+
+            <!-- Admin-only -->
+            <span sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{/admin/dashboard}" class="admin-link">Admin Panel</a>
+      </span>
+        </div>
     </nav>
+    <hr/>
 </header>
-<hr/>
 </body>
 </html>
