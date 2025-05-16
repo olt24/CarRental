@@ -1,17 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}"/>
+</head>
+<body>
 <div th:replace="fragments/header :: siteHeader"></div>
-<h2>All Cars</h2>
-<a href="/admin/cars/add">+ Add New Car</a>
-<table>
-    <tr>
-        <th>Brand</th><th>Model</th><th>Price</th><th>Actions</th>
-    </tr>
-    <tr th:each="car : ${cars}">
-        <td th:text="${car.brand}"></td>
-        <td th:text="${car.model}"></td>
-        <td th:text="${car.pricePerDay}"></td>
-        <td>
-            <a th:href="@{'/admin/cars/edit/' + ${car.id}}">Edit</a>
-            <a th:href="@{'/admin/cars/delete/' + ${car.id}}">Delete</a>
-        </td>
-    </tr>
-</table>
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">All Cars</h2>
+            <a href="/admin/cars/add" class="btn btn-success">
+                <i class="bi bi-plus-lg"></i> Add New Car
+            </a>
+        </div>
+
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Price/day</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="car : ${cars}">
+                    <td th:text="${car.brand}">Toyota</td>
+                    <td th:text="${car.model}">Corolla</td>
+                    <td th:text="${'$'+car.pricePerDay}">$50</td>
+                    <td class="text-end">
+                        <a th:href="@{'/admin/cars/edit/' + ${car.id}}"
+                           class="btn">
+                            Edit
+                        </a>
+                        <a th:href="@{'/admin/cars/delete/' + ${car.id}}"
+                           class="btn">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(cars)}">
+                    <td colspan="4" class="text-center py-4 text-muted">
+                        No cars found.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>

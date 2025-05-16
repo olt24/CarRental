@@ -104,15 +104,64 @@
     return [true,'',''];
   }
 
+  function overlapsBooked(start, end) {
+    // start/end are JS Date objects
+    return bookedRanges.some(function(r) {
+      var bs = new Date(r.start),
+              be = new Date(r.end);
+      // any overlap: start < be && end > bs
+      return (start < be) && (end > bs);
+    });
+  }
+
   $(function(){
-    $("#startDate, #endDate").datepicker({
+    // Start picker
+    $("#startDate").datepicker({
       dateFormat: 'yy-mm-dd',
       beforeShowDay: isAvailable,
-      minDate: 0
+      minDate: 0,
+      onSelect: function() {
+        var sd = $(this).datepicker('getDate');
+        sd.setDate(sd.getDate()+1);
+        $("#endDate")
+                .datepicker('option','minDate', sd)
+                .val('');
+      }
+    });
+
+    // End picker
+    $("#endDate").datepicker({
+      dateFormat: 'yy-mm-dd',
+      beforeShowDay: function(date) {
+        // also block if selecting as end would overlap a booked range from current start
+        var ok = isAvailable(date)[0];
+        var sd = $("#startDate").datepicker('getDate');
+        if (ok && sd) {
+          // only allow end if no overlap
+          var ed = date;
+          if (overlapsBooked(sd, ed)) return [false,'','Conflicts'];
+        }
+        return [ok,'',''];
+      },
+      minDate: 1,
+      onSelect: function() {
+        var sd = $("#startDate").datepicker('getDate'),
+                ed = $(this).datepicker('getDate');
+        if (!sd || ed <= sd) {
+          alert("End date must be after the start date.");
+          $(this).val('');
+          return;
+        }
+        if (overlapsBooked(sd, ed)) {
+          alert("Your selected range overlaps an existing booking.");
+          $(this).val('');
+        }
+      }
     });
   });
   /*]]>*/
 </script>
+
 <script th:inline="javascript">
   /*<![CDATA[*/
   document.querySelectorAll('.thumb').forEach(function(el) {

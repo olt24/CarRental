@@ -1,42 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>All Cars</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/catalog.css}" />
 </head>
 <body>
-<div class="container">
-    <h1>Car Catalog</h1>
 
-    <!-- Filter form -->
-    <form th:action="@{/cars}" method="get" class="row g-2 mb-4">
-        <div class="col-md-4">
-            <input type="text" name="brand" th:value="${brand}" class="form-control" placeholder="Brand">
+<!-- Your shared nav -->
+<div th:replace="fragments/header :: siteHeader"></div>
+
+<div class="container py-4">
+    <!-- Page Title -->
+    <h2 class="page-title text-center">Car Catalog</h2>
+
+    <!-- Filter Bar -->
+    <form th:action="@{/cars}" method="get" class="filter-bar mb-4">
+        <div class="filter-group">
+            <input type="text" name="brand" th:value="${brand}"
+                   class="form-control" placeholder="Brand"/>
         </div>
-        <div class="col-md-3">
-            <input type="number" name="seats" th:value="${seats}" class="form-control" placeholder="Seats">
+        <div class="filter-group">
+            <input type="number" name="seats" th:value="${seats}"
+                   class="form-control" placeholder="Seats"/>
         </div>
-        <div class="col-md-3">
-            <input type="number" step="0.01" name="maxPrice" th:value="${maxPrice}" class="form-control" placeholder="Max $/day">
+        <div class="filter-group">
+            <input type="number" step="0.01" name="maxPrice" th:value="${maxPrice}"
+                   class="form-control" placeholder="Max $/day"/>
         </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-outline-primary w-100">Filter</button>
-        </div>
+        <button type="submit" class="btn btn-primary">Apply</button>
     </form>
 
-    <!-- Listing -->
-    <div class="row">
-        <div class="col-md-4 mb-4" th:each="car : ${cars}">
-            <a th:href="@{'/cars/' + ${car.id}}">
-                <img th:src="@{${car.imagePaths[0]}}" class="img-fluid rounded" alt="Car thumb">
-                <h5 th:text="${car.brand + ' ' + car.model}"></h5>
-                <p th:text="'$' + ${car.pricePerDay} + '/day'"></p>
+    <!-- No-results message -->
+    <div th:if="${#lists.isEmpty(cars)}" class="alert alert-warning text-center">
+        No cars match your filters.
+    </div>
+
+    <!-- Car Grid -->
+    <div class="car-grid">
+        <div class="car-cell" th:each="car : ${cars}">
+            <a th:href="@{'/cars/' + ${car.id}}" class="card-link">
+                <div class="car-thumb">
+                    <img th:src="@{${car.imagePaths[0]}}"
+                         th:alt="${car.brand + ' ' + car.model}"
+                         loading="lazy"/>
+                </div>
+                <div class="car-info">
+                    <div class="car-name" th:text="${car.brand + ' ' + car.model}">Model</div>
+                    <div class="car-price" th:text="'$' + ${car.pricePerDay} + '/day'">$00/day</div>
+                </div>
             </a>
-        </div>
-        <div th:if="${#lists.isEmpty(cars)}" class="col-12">
-            <p>No cars match your filters.</p>
         </div>
     </div>
 </div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

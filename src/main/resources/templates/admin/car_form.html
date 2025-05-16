@@ -1,85 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}"/>
+  <link rel="stylesheet" th:href="@{/css/header.css}"/>
 
-<form th:action="@{${car.id == null} ? '/admin/cars/add' : '/admin/cars/edit/' + ${car.id}}"
-      method="post"
-      enctype="multipart/form-data"
-      th:object="${car}">
+  <style>
+    /* Center the card and give padding */
+    .container.py-5 {
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+    .card.mx-auto {
+      margin: 0 auto;
+      max-width: 800px;
+    }
+    /* Card styling */
+    .card.shadow-sm {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: none;
+      border-radius: 0.75rem;
+    }
+    .card-body {
+      padding: 2rem;
+    }
+    .card-title {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+    /* Form grid spacing */
+    .row.gx-3.gy-4 {
+      --bs-gutter-x: 1.5rem;
+      --bs-gutter-y: 1.5rem;
+    }
+    /* Labels */
+    .form-label {
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 0.25rem;
+    }
+    /* Inputs */
+    .form-control {
+      border-radius: 0.5rem;
+      border: 1px solid #ced4da;
+      padding: 0.5rem 0.75rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25);
+      outline: none;
+    }
+    .input-group-text {
+      background: #f8f9fa;
+      /*border: 1px solid #ced4da;*/
+      /*border-right: none;*/
+      /*border-radius: 0.5rem 0 0 0.5rem;*/
+      min-width: 3rem;
+      justify-content: center;
+      font-weight: 500;
+    }
+    .input-group .form-control {
+      border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+      /*border-left: none;*/
+      padding-left: 0.5rem;
+    }
+    /* File input */
+    input[type="file"].form-control {
+      cursor: pointer;
+    }
+    /* Save button */
+    .btn.btn-primary.px-5 {
+      background: #0d6efd;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn.btn-primary.px-5:hover {
+      background: #0b5ed7;
+    }
+    /* Icon spacing */
+    .btn i.bi {
+      margin-right: 0.5rem;
+      vertical-align: -0.125em;
+    }
+    /* Responsive tweak */
+    @media (max-width: 576px) {
+      .card.mx-auto {
+        margin: 1rem;
+      }
+    }
+  </style>
+</head>
 
-  <div>
-    <label for="brand">Brand</label>
-    <input th:field="*{brand}"
-           id="brand"
-           type="text"
-           placeholder="Brand"
-           required />
+<body>
+    <div th:replace="fragments/header :: siteHeader"></div>
+
+<div class="container py-5">
+    <div class="card mx-auto shadow-sm" style="max-width: 800px;">
+      <div class="card-body">
+        <h3 class="card-title mb-4"
+            th:text="${car.id != null} ? 'Edit Car' : 'Add New Car'">
+          Add New Car
+        </h3>
+
+        <form th:action="@{${car.id == null} ? '/admin/cars/add' : '/admin/cars/edit/' + ${car.id}}"
+              method="post"
+              enctype="multipart/form-data"
+              th:object="${car}">
+          <div class="row gx-3 gy-4">
+            <div class="col-md-6">
+              <label for="brand" class="form-label">Brand *</label>
+              <input th:field="*{brand}" id="brand" type="text"
+                     class="form-control" placeholder="e.g. Toyota" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="model" class="form-label">Model *</label>
+              <input th:field="*{model}" id="model" type="text"
+                     class="form-control" placeholder="e.g. Corolla" required>
+            </div>
+
+            <div class="col-md-4">
+              <label for="year" class="form-label">Year *</label>
+              <input th:field="*{year}" id="year" type="number"
+                     class="form-control" placeholder="2023" required>
+            </div>
+
+            <div class="col-md-4">
+              <label for="pricePerDay" class="form-label">Price per Day *</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input th:field="*{pricePerDay}"
+                       id="pricePerDay"
+                       type="number" step="0.01"
+                       class="form-control"
+                       placeholder="0.00"
+                       required />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label for="seats" class="form-label">Seats</label>
+              <input th:field="*{seats}" id="seats" type="number"
+                     class="form-control" placeholder="e.g. 5">
+            </div>
+
+            <div class="col-md-6">
+              <label for="fuelType" class="form-label">Fuel Type</label>
+              <input th:field="*{fuelType}" id="fuelType" type="text"
+                     class="form-control" placeholder="Gasoline / Diesel">
+            </div>
+
+            <div class="col-md-6">
+              <label for="transmission" class="form-label">Transmission</label>
+              <input th:field="*{transmission}" id="transmission" type="text"
+                     class="form-control" placeholder="Automatic / Manual">
+            </div>
+
+            <div class="col-12">
+              <label for="images" class="form-label">Upload Images</label>
+              <input id="images" type="file" name="images" multiple
+                     class="form-control" accept=".jpg,.jpeg,.png" />
+              <small class="form-text text-muted">
+                You can select multiple images (JPG/PNG).
+              </small>
+            </div>
+
+            <div class="col-12 text-end">
+              <button type="submit" class="btn btn-primary px-5">
+                <i class="bi bi-save2 me-1"></i> Save
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
   </div>
-
-  <div>
-    <label for="model">Model</label>
-    <input th:field="*{model}"
-           id="model"
-           type="text"
-           placeholder="Model"
-           required />
-  </div>
-
-  <div>
-    <label for="year">Year</label>
-    <input th:field="*{year}"
-           id="year"
-           type="number"
-           placeholder="Year"
-           th:value="${car.id != null ? car.year : ''}"
-           onfocus="this.placeholder=''"
-           onblur="if(this.value=='') this.placeholder='Year';"
-           required />
-  </div>
-
-  <div>
-    <label for="pricePerDay">Price per Day</label>
-    <input th:field="*{pricePerDay}"
-           id="pricePerDay"
-           type="number"
-           placeholder="Price/Day"
-           th:value="${car.id != null ? car.pricePerDay : ''}"
-           onfocus="this.placeholder=''"
-           onblur="if(this.value=='') this.placeholder='Price/Day';"
-           required />
-  </div>
-
-  <div>
-    <label for="fuelType">Fuel Type</label>
-    <input th:field="*{fuelType}"
-           id="fuelType"
-           type="text"
-           placeholder="Fuel Type" />
-  </div>
-
-  <div>
-    <label for="seats">Nr of Seats</label>
-    <input th:field="*{seats}"
-           id="seats"
-           type="number"
-           placeholder="Nr of seats"
-           th:value="${car.id != null ? car.seats : ''}"
-           onfocus="this.placeholder=''"
-           onblur="if(this.value=='') this.placeholder='Nr of seats';" />
-  </div>
-
-  <div>
-    <label for="transmission">Transmission</label>
-    <input th:field="*{transmission}"
-           id="transmission"
-           type="text"
-           placeholder="Transmission" />
-  </div>
-
-  <div>
-    <label for="images">Upload Images</label>
-    <input id="images"
-           type="file"
-           name="images"
-           multiple />
-  </div>
-
-  <button type="submit">Save</button>
-</form>
+</body>

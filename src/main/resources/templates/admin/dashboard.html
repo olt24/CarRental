@@ -13,8 +13,6 @@
 <h1>Admin Dashboard</h1>
 
 <nav>
-    <a th:href="@{/admin/dashboard}">Dashboard</a> |
-    <a th:href="@{/admin/licenses}">Licenses</a> |
     <a th:href="@{/admin/cars}">Cars</a>
 </nav>
 
@@ -45,7 +43,7 @@
             <td th:text="${b.endDate   != null ? #temporals.format(b.endDate,   'yyyy-MM-dd') : 'N/A'}">
                 2025-05-05
             </td>
-            <td th:text="${b.status}">PENDING</td>
+            <td th:text="${b.payment.status}">PENDING</td>
         </tr>
         <tr th:if="${#lists.isEmpty(bookings)}">
             <td colspan="6">No bookings found.</td>

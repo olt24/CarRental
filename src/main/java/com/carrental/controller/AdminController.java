@@ -37,11 +37,11 @@ public class AdminController {
         return "admin/dashboard";
     }
 
-    @GetMapping("/licenses")
-    public String pending(Model m) {
-        m.addAttribute("list", userService.pendingLicenses());
-        return "admin/licenses";
-    }
+//    @GetMapping("/licenses")
+//    public String pending(Model m) {
+//        m.addAttribute("list", userService.pendingLicenses());
+//        return "admin/licenses";
+//    }
 
     @PostMapping("/licenses/{id}/approve")
     public String approve(@PathVariable Long id) {

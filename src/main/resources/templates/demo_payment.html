@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Checkout</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <style>
+        /* inline minimal styling for demo */
+        .demo-pay-container {
+            max-width: 400px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .demo-pay-container h2 { margin-bottom: 1rem; }
+        .demo-pay-details { margin: 1rem 0; font-size: 1.1rem; }
+        .btn-pay {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-pay:hover { background: #218838; }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/header :: siteHeader"></div>
+
+<div class="demo-pay-container">
+    <h2>Checkout</h2>
+    <div class="demo-pay-details">
+        <p><strong>Car:</strong>
+            <span th:text="${payment.booking.car.brand + ' ' + payment.booking.car.model}"></span>
+        </p>
+        <p><strong>Dates:</strong>
+            <span th:text="${payment.booking.startDate}"></span>
+            —
+            <span th:text="${payment.booking.endDate}"></span>
+        </p>
+        <p><strong>Total:</strong>
+            $<span th:text="${payment.amount}"></span>
+        </p>
+    </div>
+    <form th:action="@{/payment/demo/{id}(id=${payment.id})}" method="post">
+        <button type="submit" class="btn-pay">Pay Now</button>
+    </form>
+
+    <p style="margin-top:1rem;color:#666;font-size:0.9rem;">
+        *This is a demo payment. No real charges.*
+    </p>
+</div>
+</body>
+</html>

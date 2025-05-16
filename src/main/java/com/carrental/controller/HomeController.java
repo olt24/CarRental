@@ -129,7 +129,7 @@ public class HomeController {
         booking = bookingRepository.save(booking);
 
         // 3) Calculate amount
-        long days = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+        long days = ChronoUnit.DAYS.between(startDate, endDate);
         BigDecimal amount = BigDecimal.valueOf(car.getPricePerDay())
                 .multiply(BigDecimal.valueOf(days));
 
@@ -138,15 +138,50 @@ public class HomeController {
         payment.setBooking(booking);
         payment.setAmount(amount);
         payment.setMethod(paymentMethod);
-        payment.setStatus(paymentMethod == Payment.PaymentMethod.CASH
-                ? Payment.PaymentStatus.PAID
-                : Payment.PaymentStatus.PENDING);
+
+        if (paymentMethod == Payment.PaymentMethod.CASH) {
+            // immediate PAID for cash option
+            payment.setStatus(Payment.PaymentStatus.PAID);
+            paymentRepository.save(payment);
+            flash.addFlashAttribute("success",
+                    "Booked for " + days + " day(s). Please pay $"
+                            + amount + " on pickup.");
+            return "redirect:/dashboard";
+        } else {
+            // ONLINE: pending until demo “Pay Now”
+            payment.setStatus(Payment.PaymentStatus.PENDING);
+            payment = paymentRepository.save(payment);
+            return "redirect:/payment/demo/" + payment.getId();
+        }
+    }
+
+    // 3) Show the fake “Pay Now” page
+    @GetMapping("/payment/demo/{paymentId}")
+    public String demoPaymentPage(
+            @PathVariable Long paymentId,
+            Model model
+    ) {
+        Payment payment = paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid payment id: " + paymentId));
+        model.addAttribute("payment", payment);
+        return "demo_payment";
+    }
+
+
+    @PostMapping("/payment/demo/{paymentId}")
+    public String doDemoPayment(
+            @PathVariable Long paymentId,
+            RedirectAttributes flash
+    ) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow();
+        payment.setStatus(Payment.PaymentStatus.PAID);
         paymentRepository.save(payment);
 
         flash.addFlashAttribute("success",
-                "Booked for " + days + " day(s). Total: $" + amount + ".");
+                "🎉 Payment of $" + payment.getAmount() + " received! Your booking is confirmed.");
         return "redirect:/dashboard";
     }
+
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {

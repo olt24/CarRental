@@ -1,0 +1,133 @@
+/* catalog.css */
+
+/* — Page Title — */
+.page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+}
+
+/* — Filter Bar — */
+.filter-bar {
+    background: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.filter-bar .filter-group {
+    flex: 1 1 150px;
+    max-width: 200px;
+}
+.filter-bar .form-control {
+    height: 2.6rem;
+    padding: 0 0.75rem;
+    font-size: 0.95rem;
+    border-radius: 1.25rem;            /* pill shape */
+    border: 1px solid #ccc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.filter-bar .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+.filter-bar .btn {
+    flex: 0 0 auto;
+    padding: 0 1.2rem;
+    height: 2.6rem;
+    font-size: 0.95rem;
+    background: #007bff;
+    border: none;
+    border-radius: 1.25rem;
+    color: #fff;
+    transition: background 0.2s;
+}
+.filter-bar .btn:hover {
+    background: #0056b3;
+}
+
+/* — No-results message — */
+.alert-warning.text-center {
+    background: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+/* — Car Grid — */
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.5rem;                       /* increased gap */
+    justify-items: center;
+}
+.car-cell {
+    max-width: 200px;                  /* increased from 140px */
+}
+.card-link {
+    display: block;
+    background: #fff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* — Thumbnail — */
+.car-thumb {
+    width: 100%;
+    height: 160px;                     /* taller thumbnails */
+    overflow: hidden;
+    background: #f5f5f5;
+}
+.car-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* — Info — */
+.car-info {
+    padding: 0.6rem;
+    text-align: center;
+}
+.car-name {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+.car-price {
+    font-size: 0.9rem;
+    color: #007bff;
+    font-weight: 600;
+}
+
+/* — Responsive — */
+@media (max-width: 768px) {
+    .filter-bar .filter-group {
+        flex: 1 1 100%;
+        max-width: none;
+    }
+    .car-thumb {
+        height: 100px;
+    }
+    .car-cell {
+        max-width: 140px;
+    }
+}
