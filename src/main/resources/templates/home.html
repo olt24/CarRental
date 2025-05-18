@@ -31,7 +31,7 @@
     <div class="cards">
         <div class="card" th:each="car : ${cars}">
             <a th:href="@{'/cars/' + ${car.id}}">
-                <img th:src="@{${car.imagePaths[1]}}" alt="Image of [[${car.brand}]] [[${car.model}]]">
+                <img th:src="@{${car.imagePaths[0]}}" alt="Image of [[${car.brand}]] [[${car.model}]]">
                 <div class="card-body">
                     <h3 th:text="${car.brand + ' ' + car.model}"></h3>
                     <p th:text="'$' + ${car.pricePerDay} + '/day'"></p>

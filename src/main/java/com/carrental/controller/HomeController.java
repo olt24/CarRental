@@ -182,6 +182,22 @@ public class HomeController {
         return "redirect:/dashboard";
     }
 
+    @PostMapping("/booking/cancel/{id}")
+    public String cancelBooking(@PathVariable Long id, Principal principal, RedirectAttributes flash) {
+        Booking booking = bookingRepository.findById(id).orElseThrow();
+        String email = principal.getName();
+
+        if (!booking.getUser().getEmail().equals(email)) {
+            flash.addFlashAttribute("error", "Unauthorized.");
+            return "redirect:/dashboard";
+        }
+
+        bookingRepository.deleteById(id);
+        flash.addFlashAttribute("success", "Booking cancelled.");
+        return "redirect:/dashboard";
+    }
+
+
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {

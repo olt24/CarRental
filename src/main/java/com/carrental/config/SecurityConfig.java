@@ -34,7 +34,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(
             HttpSecurity http,
-            DaoAuthenticationProvider authProvider
+            DaoAuthenticationProvider authProvider,
+            CustomLoginFailureHandler failureHandler
     ) throws Exception {
         http
                 .authenticationProvider(authProvider)
@@ -46,8 +47,10 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/dashboard", true)
+                        .failureHandler(failureHandler)
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                         .logoutSuccessUrl("/login?logout")

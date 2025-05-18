@@ -24,7 +24,7 @@ public class AuthController {
                            Model m) {
         try {
             userService.register(name, email, password, dlFile);
-            return "redirect:/login?registered";
+            return "redirect:/login?msg=registered";
         } catch (Exception e) {
             m.addAttribute("error", e.getMessage());
             return "register";
@@ -32,11 +32,20 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String showLogin(@RequestParam(required=false) String error,
-                            @RequestParam(required=false) String logout,
-                            Model m) {
-        if (error != null)  m.addAttribute("error","Invalid credentials");
-        if (logout != null) m.addAttribute("msg","Logged out");
+    public String showLogin(@RequestParam(required = false) String error,
+                            @RequestParam(required = false) String logout,
+                            @RequestParam(required = false) String msg,
+                            Model model) {
+        if (error != null)
+            model.addAttribute("error", "Invalid credentials");
+
+        if (logout != null)
+            model.addAttribute("msg", "Logged out");
+
+        if (msg != null && logout == null)
+            model.addAttribute("msg", msg);
+
         return "login";
     }
+
 }

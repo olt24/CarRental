@@ -1,0 +1,80 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #343a40;
+    color: #fff;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 0.95rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+form {
+    display: inline;
+}
+
+select {
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
+}
+
+button {
+    padding: 0.25rem 0.75rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-left: 0.3rem;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+}
+
+form:has(button[type="submit"]:hover) button {
+    background-color: #0056b3;
+}
+
+form:has(button[type='submit']:nth-child(2)) button {
+    background-color: #dc3545;
+}
+
+form:has(button[type='submit']:nth-child(2)) button:hover {
+    background-color: #a71d2a;
+}
+
+@media (max-width: 768px) {
+    th, td {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
+
+    button, select {
+        font-size: 0.8rem;
+    }
+}

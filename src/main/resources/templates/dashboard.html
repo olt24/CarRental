@@ -17,7 +17,7 @@
         <thead>
         <tr>
             <th>Car</th><th>From</th><th>To</th>
-            <th>Days</th><th>Amount</th><th>Method</th><th>Status</th>
+            <th>Days</th><th>Amount</th><th>Method</th><th>Status</th><th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -38,9 +38,16 @@
             <td th:text="${b.payment.amount}"></td>
             <td th:text="${b.payment.method}"></td>
             <td th:text="${b.payment.status}"></td>
+            <td>
+                <form th:action="@{'/booking/cancel/' + ${b.id}}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                </form>
+            </td>
+
         </tr>
         <tr th:if="${#lists.isEmpty(bookings)}">
-            <td colspan="7">You have no bookings yet.</td>
+            <td colspan="8">You have no bookings yet.</td>
         </tr>
         </tbody>
     </table>

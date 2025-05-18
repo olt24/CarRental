@@ -21,8 +21,20 @@
         <input type="password" id="password" name="password" required autocomplete="current-password"/>
       </div>
       <button type="submit" class="btn-shine">Log In</button>
-      <div class="form-message error" th:if="${error}" th:text="${error}"></div>
-      <div class="form-message success" th:if="${msg}" th:text="${msg}"></div>
+      <!-- ✅ Show success messages for registration and logout -->
+      <div class="form-message success"
+           th:if="${msg == 'registered' or msg == 'Logged out'}"
+           th:text="${msg == 'registered' ?
+               'Registration successful! Please wait for admin to approve your license before logging in.' :
+               'You have been logged out successfully.'}">
+      </div>
+
+      <!-- ✅ Show all error messages including disabled, invalid login, etc. -->
+      <div class="form-message error"
+           th:if="${msg != null and msg != 'registered' and msg != 'Logged out'}"
+           th:text="${msg}">
+      </div>
+
     </form>
     <p class="switch-link">
       Don’t have an account? <a th:href="@{/register}">Sign up</a>

@@ -1,8 +1,10 @@
 package com.carrental.controller;
 
 import com.carrental.entity.Car;
+import com.carrental.entity.User;
 import com.carrental.repo.BookingRepository;
 import com.carrental.repo.CarRepository;
+import com.carrental.repo.UserRepository;
 import com.carrental.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
@@ -126,4 +131,42 @@ public class AdminController {
         carRepository.deleteById(id);
         return "redirect:/admin/cars";
     }
+
+    @PostMapping("/bookings/delete/{id}")
+    public String deleteBooking(@PathVariable Long id) {
+        bookingRepository.deleteById(id);
+        return "redirect:/admin/dashboard";
+    }
+
+    @GetMapping("/users")
+    public String listUsers(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        return "admin/user_list";
+    }
+
+    @PostMapping("/users/{id}/role")
+    public String changeUserRole(@PathVariable Long id, @RequestParam String role) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setRole(role);
+        userRepository.save(user);
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/users/{id}/disable")
+    public String disableUser(@PathVariable Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setEnabled(false);
+        userRepository.save(user);
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/users/{id}/enable")
+    public String enableUser(@PathVariable Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setEnabled(true);
+        userRepository.save(user);
+        return "redirect:/admin/users";
+    }
+
+
 }
