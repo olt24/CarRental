@@ -76,7 +76,7 @@ public class AdminController {
         for (MultipartFile image : images) {
             if (!image.isEmpty()) {
                 String filename = UUID.randomUUID() + "_" + image.getOriginalFilename();
-                Path path = Paths.get("src/main/resources/static/uploads/cars/" + filename);
+                Path path = Paths.get("uploads/cars/" + filename);
                 Files.write(path, image.getBytes());
                 imagePaths.add("uploads/cars/" + filename);
             }
@@ -112,7 +112,7 @@ public class AdminController {
         for (MultipartFile image : images) {
             if (!image.isEmpty()) {
                 String filename = UUID.randomUUID() + "_" + image.getOriginalFilename();
-                Path path = Paths.get("src/main/resources/static/uploads/cars/" + filename);
+                Path path = Paths.get("uploads/cars/" + filename);
                 Files.write(path, image.getBytes());
                 newImages.add("uploads/cars/" + filename);
             }
